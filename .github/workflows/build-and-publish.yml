@@ -13,4 +13,6 @@ jobs:
       - run: rm -rf docs
       - run: npx parcel build --public-url . --dist-dir docs src/index.html
       - run: git add docs
+      - run: git config --local user.email "Jin-Hyeok.Cha@outlook.kr"
+      - run: git config --local user.name "Jin-Hyeok, Cha"
       - run: git commit -m "v$(cat package.json | jq -r .version), $(date)"
