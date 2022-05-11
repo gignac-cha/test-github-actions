@@ -1,0 +1,26 @@
+{
+  "name": "github-actions-test",
+  "version": "1.0.0",
+  "description": "Work all with GitHub actions and github.dev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gignac-cha/github-actions-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gignac-cha/github-actions-test/issues"
+  },
+  "homepage": "https://github.com/gignac-cha/github-actions-test#readme",
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "jshint": "^2.13.4",
+    "parcel": "^2.5.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.4"
+  }
+}
