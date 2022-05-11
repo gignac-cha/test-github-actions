@@ -16,3 +16,4 @@ jobs:
       - run: git config --local user.email "Jin-Hyeok.Cha@outlook.kr"
       - run: git config --local user.name "Jin-Hyeok, Cha"
       - run: git commit -m "v$(cat package.json | jq -r .version), $(date)"
+      - run: git push
