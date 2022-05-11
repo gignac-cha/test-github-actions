@@ -11,12 +11,14 @@ jobs:
       - uses: actions/checkout@v3
       # - run: git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gignac-cha/github-actions-test.git
       - run: git fetch
-      # - run: git status
-      # - run: git branch -a
-      # - run: git log --all --graph --oneline
+      - run: git status
+      - run: git branch -a
+      - run: git log --all --graph --oneline
       - run: git config --local user.email "Jin-Hyeok.Cha@outlook.kr"
       - run: git config --local user.name "Jin-Hyeok, Cha"
       - run: git switch page
+      - run: git branch -a
+      - run: git log --all --graph --oneline
       - run: git merge --no-edit -X theirs origin/test
       - run: npm i
       - run: rm -rf docs
