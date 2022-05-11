@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gignac-cha/github-actions-test.git
+      # - run: git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gignac-cha/github-actions-test.git
+      - run: git fetch
       - run: git status
       - run: git branch -a
       - run: git log --all --graph --oneline
