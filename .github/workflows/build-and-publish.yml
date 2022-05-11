@@ -2,13 +2,19 @@ name: Build and publish
 
 on:
   push:
-    branches: [ page ]
+    branches: [ test ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/gignac-cha/github-actions-test.git
+      - run: git status
+      - run: git branch -a
+      - run: git log --all --graph --oneline
+      # - run: git switch page
+      # - run: git merge --no-edit -X theirs origin/test
       - run: npm i
       - run: rm -rf docs
       - run: npx parcel build --public-url . --dist-dir docs src/index.html
