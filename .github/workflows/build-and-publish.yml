@@ -2,15 +2,13 @@ name: Build and publish
 
 on:
   push:
-    branches: [ main ]
+    branches: [ page ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: git switch page
-      - run: git merge --theirs main
       - run: npm i
       - run: rm -rf docs
       - run: npx parcel build --public-url . --dist-dir docs src/index.html
