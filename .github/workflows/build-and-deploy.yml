@@ -1,0 +1,42 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - test-pnpm-vite-build
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          check-latest: true
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+        shell: bash
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm --recursive install
+      - uses: actions/cache@v4
+        with:
+          path: packages/playground/.next
+          key: ${{ runner.os }}-next-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('packages/playground/**/*.js', 'packages/playground/**/*.jsx', 'packages/playground/**/*.ts', 'packages/playground/**/*.tsx') }}
+          restore-keys: ${{ runner.os }}-next-
+      - run: pnpm --recursive build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: packages/playground/out
+      - uses: actions/deploy-pages@v4
