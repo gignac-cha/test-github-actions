@@ -11,6 +11,7 @@ const nextConfig = {
       },
     ];
   },
+  basePath: '/test-github-actions',
   output: 'export',
 };
 
