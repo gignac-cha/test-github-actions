@@ -1,10 +1,33 @@
 name: Test Terraform
 
 on:
-  push:
+  # push:
+  #   branches:
+  #     - test-terraform
+  pull_request:
+    # type:
+    #   - synchronize
     branches:
-      - test-terraform
+      - main
   workflow_dispatch:
+    inputs:
+      ratio:
+        type: choice
+        description: Ratio (0 ~ 255)
+        required: true
+        default: "0"
+        options:
+          - "0"
+          - "3"
+          - "13"
+          - "26"
+          - "51"
+          - "77"
+          - "128"
+          - "179"
+          - "230"
+          - "242"
+          - "255"
 
 permissions:
   id-token: write
@@ -13,7 +36,9 @@ permissions:
 jobs:
   test-terraform:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request' && !github.event.pull_request.merged && startsWith(github.head_ref, 'chore/')
     steps:
       - uses: actions/checkout@v4
       - uses: aws-actions/configure-aws-credentials@v4
@@ -22,6 +47,21 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-      - run: terraform init
+      - run: mkdir -p "~/.terraform.d/plugin-cache"
+      - uses: actions/cache@v4
+        with:
+          path: "~/.terraform.d/plugin-cache"
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: terraform-${{ runner.os }}-
+      - run: terraform init -upgrade
+        env:
+          TF_VAR_ratio: ${{ inputs.ratio }}
+          TF_PLUGIN_CACHE_DIR: "~/.terraform.d/plugin-cache"
       - run: terraform plan
+        env:
+          TF_VAR_ratio: ${{ inputs.ratio }}
+          TF_PLUGIN_CACHE_DIR: "~/.terraform.d/plugin-cache"
       - run: terraform apply -auto-approve
+        env:
+          TF_VAR_ratio: ${{ inputs.ratio }}
+          TF_PLUGIN_CACHE_DIR: "~/.terraform.d/plugin-cache"
