@@ -18,6 +18,8 @@ jobs:
     if: github.event_name == 'pull_request' && !github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       # - run: echo "${{ toJSON(github) }}"
       # - env:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -25,7 +27,7 @@ jobs:
       # - run: echo "${{ toJSON(github.event.pull_request) }}"
       # - run: echo "${{ toJSON(github.event.head_commit) }}"
       # - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
-      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.before }})" >> $GITHUB_ENV
+      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.pull_request.head.ref }})" >> $GITHUB_ENV
       - run: echo "${{ env.COMMIT_MESSAGE }}"
   # test-pr-on-push:
   #   runs-on: ubuntu-latest
