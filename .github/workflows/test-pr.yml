@@ -4,13 +4,16 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - test-pr
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  test-pr:
+  test-pr-on-pr:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && !github.event.pull_request.merged
     steps:
@@ -22,3 +25,12 @@ jobs:
       - run: echo "${{ toJSON(github.event.pull_request) }}"
       - run: echo "${{ toJSON(github.event.head_commit) }}"
       - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
+  test-pr-on-push::
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      # - run: echo "${{ toJSON(github) }}"
+      - env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
