@@ -15,4 +15,7 @@ jobs:
     if: github.event_name == 'pull_request' && !github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v4
-      - run: echo ${{ toJSON(fromJSON(github.event)) }}
+      - run: echo "${{ toJSON(github) }}"
+      - env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
