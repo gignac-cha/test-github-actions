@@ -33,15 +33,14 @@ jobs:
       - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV
       # - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.after }})" >> $GITHUB_ENV
       - run: echo "${{ env.COMMIT_MESSAGE }}"
-      - run: echo |
-            {
+      - run: echo | "{
               "message": "✅ Success",
               "pull_request_title": "${{ github.event.pull_request.title }}",
               "pull_request_number": "${{ github.event.pull_request.number }}",
               "pull_request_url": "${{ github.event.pull_request.html_url }}",
               "commit_message": "${{ env.GITHUB_COMMIT_MESSAGE }}",
               "commit_url": "${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}"
-            }
+            }"
   # test-pr-on-push:
   #   runs-on: ubuntu-latest
   #   if: github.event_name == 'push'
