@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
       - run: git status
       - run: git branch -a
       - run: git log --all --graph --oneline
@@ -30,8 +30,8 @@ jobs:
       # - run: echo "${{ toJSON(github.event.pull_request) }}"
       # - run: echo "${{ toJSON(github.event.head_commit) }}"
       # - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
-      # - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.pull_request.head.ref }})" >> $GITHUB_ENV
-      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.after }})" >> $GITHUB_ENV
+      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV
+      # - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.after }})" >> $GITHUB_ENV
       - run: echo "${{ env.COMMIT_MESSAGE }}"
   # test-pr-on-push:
   #   runs-on: ubuntu-latest
