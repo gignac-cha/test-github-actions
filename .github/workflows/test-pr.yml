@@ -22,15 +22,17 @@ jobs:
       # - env:
       #     GITHUB_CONTEXT: ${{ toJSON(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      - run: echo "${{ toJSON(github.event.pull_request) }}"
-      - run: echo "${{ toJSON(github.event.head_commit) }}"
-      - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
-  test-pr-on-push:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    steps:
-      - uses: actions/checkout@v4
-      # - run: echo "${{ toJSON(github) }}"
-      - env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      # - run: echo "${{ toJSON(github.event.pull_request) }}"
+      # - run: echo "${{ toJSON(github.event.head_commit) }}"
+      # - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
+      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s)" >> $GITHUB_ENV
+      - run: echo "${{ env.COMMIT_MESSAGE }}"
+  # test-pr-on-push:
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # - run: echo "${{ toJSON(github) }}"
+  #     - env:
+  #         GITHUB_CONTEXT: ${{ toJSON(github) }}
+  #       run: echo "$GITHUB_CONTEXT"
