@@ -19,9 +19,10 @@ jobs:
           user: ${{ github.event.pull_request.user.id }}
       - id: generate-message
         run: |
-          node -e 'console.log("message=" + `✅ *${{ 'name' }} Success* <@${{ steps.get-slack-id.outputs.id }}>
-            > *Pull Request*: ${{ github.event.pull_request.title }} <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>
-            > *Commit*: <${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}|${"${{ github.event.pull_request.head.sha }}".slice(0, 8)}>
-            > *Build ID*: <${{ vars.TEST_WEB_URL }}|${{ github.run_number }}> (<${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>)
+          node -e 'console.log("message=" + `\
+            ✅ *${{ 'name' }} Success* <@${{ steps.get-slack-id.outputs.id }}>\
+            > *Pull Request*: ${{ github.event.pull_request.title }} <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>\
+            > *Commit*: <${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}|${"${{ github.event.pull_request.head.sha }}".slice(0, 8)}>\
+            > *Build ID*: <${{ vars.TEST_WEB_URL }}|${{ github.run_number }}> (<${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>)\
           `)' >> $GITHUB_OUTPUT
       - run: echo ${{ steps.generate-message.outputs.message }}
