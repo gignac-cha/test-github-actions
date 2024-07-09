@@ -13,8 +13,8 @@ jobs:
         with:
           node-version: 22
       - run: |
-        node -e 'console.log(1)'
+          node -e 'console.log(1)'
       - run: |
-        node -e '
-          console.log(2)
-        '
+          node -e '
+            console.log(2)
+          '
