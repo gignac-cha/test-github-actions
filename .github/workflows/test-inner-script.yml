@@ -1,0 +1,20 @@
+name: test-inner-script
+
+on:
+  push:
+    branches:
+      - test-inner-script
+
+jobs:
+  test-inner-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+        node -e 'console.log(1)'
+      - run: |
+        node -e '
+          console.log(2)
+        '
