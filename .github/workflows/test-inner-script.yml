@@ -1,9 +1,9 @@
 name: test-inner-script
 
 on:
-  push:
+  pull_request:
     branches:
-      - test-inner-script
+      - main
 
 jobs:
   test-inner-script:
