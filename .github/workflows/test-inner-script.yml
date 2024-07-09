@@ -12,9 +12,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - id: get-slack-id
+        uses: ./.github/actions/get-slack-user-id
+        with:
+          user: ${{ github.event.pull_request.user.id }}
+      - id: generate-message
+        run: |
+          node -e 'console.log(`
+            ✅ *${{ name }} Success* <@${{ slackMemberID }}>
+            > *Pull Request*: ${{ github.event.pull_request.title }} <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>
+            > *Commit*: <${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}|${{ github.event.pull_request.head.sha.slice(0, 8) }}>
+            > *Build ID*: <${{ ${{ vars.TEST_WEB_URL }} }}|${{ github.run_number }}> (<${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>)
+          `)'
       - run: |
-          node -e 'console.log(1)'
-      - run: |
-          node -e '
-            console.log(2)
-          '
+          node -e 'console.log("${{ steps.get-slack-id.outputs.id }}")'
