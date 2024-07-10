@@ -56,15 +56,18 @@ runs:
                   {
                     type: 'rich_text_quote',
                     elements: [
-                      createTextElement('Commit:', true),
+                      createTextElement('Commit: ', true),
                       createLinkElement('${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}', '${{ github.event.pull_request.head.sha }}'.slice(0, 8)),
                     ],
                   },
                   ${{ inputs.is-success }} ? {
                     type: 'rich_text_quote',
                     elements: [
-                      createTextElement('Build ID:', true),
+                      createTextElement('Build ID: ', true),
                       createLinkElement(testWebURL.toString(), '${{ github.run_number }}'),
+                      createTextElement(' ('),
+                      createLinkElement('${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}', 'Workflow #${{ github.run_number }}'),
+                      createTextElement(')'),
                     ],
                   } : {
                     type: 'rich_text_quote',
