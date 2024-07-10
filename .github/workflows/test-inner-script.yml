@@ -15,10 +15,12 @@ jobs:
           result-encoding: string
           script: |
             // const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
-            function createTextElement(args) {
-              return { type: 'text', text: args.text, { style: { bold: args.bold } } };
-            }
-            return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
+            //function createTextElement(args) {
+            //  // return { type: 'text', text: args.text, { style: { bold: args.bold } } };
+            //  return {}
+            //}
+            // return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
+            return JSON.stringify({ blocks: [] });
       - run: echo Script ${{ steps.test-script.outputs.result }}
       # - uses: actions/checkout@v4
       # - uses: actions/setup-node@v4
