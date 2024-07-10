@@ -28,6 +28,8 @@ jobs:
           gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs | \
           jq '.jobs[] | select(.name == "${{ github.job }}") | .id' | \
           gawk '{ print "id=" $1 }' >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
       - run: "echo Job ID: ${{ steps.get-job-id.outputs.id }}"
       # - id: test-script
       #   uses: actions/github-script@v7
