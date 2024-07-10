@@ -16,6 +16,7 @@ jobs:
           is-success: true
       - uses: ./.github/actions/send-slack-notification
         with:
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           title: '✅ Unit Test Success'
           is-success: false
       # - id: test-script
