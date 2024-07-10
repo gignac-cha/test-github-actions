@@ -13,11 +13,13 @@ jobs:
       - uses: ./.github/actions/send-slack-notification
         with:
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          test-web-url: ${{ vars.TEST_WEB_URL }}
           title: '✅ Unit Test Success'
           is-success: true
       - uses: ./.github/actions/send-slack-notification
         with:
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          test-web-url: ${{ vars.TEST_WEB_URL }}
           title: '⛔️ Integration Test Failed'
           is-success: false
       # - id: test-script
