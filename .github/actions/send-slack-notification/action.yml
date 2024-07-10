@@ -22,7 +22,8 @@ runs:
     - id: get-slack-user-id
       uses: ./.github/actions/get-slack-user-id
       with:
-        user: ${{ inputs.github-object.event.pull_request.user.id }}
+        # user: ${{ inputs.github-object.event.pull_request.user.id }}
+        user: ${{ github.event.pull_request.user.id }}
     - run: echo here ${{ inputs.is-success }} here
       shell: /bin/bash
     - id: generate-message

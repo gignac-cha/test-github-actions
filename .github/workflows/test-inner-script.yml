@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/send-slack-notification
         with:
-          github-object: ${{ github }}
+          github-object: ${{ toJSON(github) }}
           is-success: true
       - uses: ./.github/actions/send-slack-notification
         with:
