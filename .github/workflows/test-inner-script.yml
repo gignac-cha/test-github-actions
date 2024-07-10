@@ -14,7 +14,10 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
+            # const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
+            function createTextElement(args) {
+              return { type: 'text', text: args.text, { style: { bold: args.bold } } };
+            }
             return {
               blocks: [
                 createTextElement({ text: 'Test' })
