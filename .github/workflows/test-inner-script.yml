@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/send-slack-notification
         with:
+          github-object: ${{ github }}
           is-success: true
       - uses: ./.github/actions/send-slack-notification
         with:
