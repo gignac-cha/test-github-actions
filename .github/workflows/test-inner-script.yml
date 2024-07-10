@@ -14,13 +14,12 @@ jobs:
         with:
           result-encoding: string
           script: |
-            // const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
-            function createTextElement(args) {
-              // return { type: 'text', text: args.text, { style: { bold: args.bold } } };
-              return { type: 'text', text: args.text };
-            }
+            const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
+            // function createTextElement(args) {
+            //   // return { type: 'text', text: args.text, { style: { bold: args.bold } } };
+            //   return { type: 'text', text: args.text };
+            // }
             return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
-            // return JSON.stringify({ blocks: [ createTextElement() ] });
       - run: echo Script ${{ steps.test-script.outputs.result }}
       # - uses: actions/checkout@v4
       # - uses: actions/setup-node@v4
