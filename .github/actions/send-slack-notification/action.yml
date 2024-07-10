@@ -70,4 +70,5 @@ runs:
             ],
           });
     - run: |
-        echo curl -X POST ${{ input.slack-webhook-url }} -H 'Content-Type: application/json' -d '${{ steps.generate-message.outputs.result }}'
+        echo curl -X POST ${{ inputs.slack-webhook-url }} -H 'Content-Type: application/json' -d '${{ steps.generate-message.outputs.result }}'
+      shell: bash
