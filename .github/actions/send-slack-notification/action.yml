@@ -1,0 +1,70 @@
+name: Send Slack Notification
+description: Send notification to Slack channel.
+
+inputs:
+  slack-webhook-url:
+    description: Slack Webhook URL
+    required: true
+  github-object:
+    description: GitHub Object
+    required: true
+  title:
+    description: Title
+    required: true
+  is-success:
+    type: boolean
+    description: Success?
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - id: get-slack-user-id
+      uses: ./.github/actions/get-slack-user-id
+      with:
+        user: ${{ inputs.github-object.event.pull_request.user.id }}
+    - run: echo here ${{ inputs.is-success }} here
+    - id: generate-message
+      uses: actions/github-script@v7
+      with:
+        result-encoding: string
+        script: |
+          const createTextElement = (text, bold = false) => ({ type: 'text', text, style: { bold } });
+          const createUserElement = (user_id) => ({ type: 'user', user_id });
+          return JSON.stringify({
+            blocks: [
+              {
+                type: 'rich_text',
+                elements: [
+                  {
+                    type: 'rich_text_section',
+                    elements: [
+                      createTextElement('${{ inputs.title }}', true),
+                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  },
+                  {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('Pull Request', true),
+                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  },
+                  {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('Commit'),
+                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  },
+                  {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement(''),
+                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  },
+                ],
+              },
+            ],
+          })
