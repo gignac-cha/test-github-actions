@@ -24,6 +24,7 @@ runs:
       with:
         user: ${{ inputs.github-object.event.pull_request.user.id }}
     - run: echo here ${{ inputs.is-success }} here
+      shell: /bin/bash
     - id: generate-message
       uses: actions/github-script@v7
       with:
