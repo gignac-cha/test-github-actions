@@ -5,9 +5,6 @@ inputs:
   slack-webhook-url:
     description: Slack Webhook URL
     required: true
-  github-object:
-    description: GitHub Object
-    required: true
   title:
     description: Title
     required: true
@@ -22,10 +19,7 @@ runs:
     - id: get-slack-user-id
       uses: ./.github/actions/get-slack-user-id
       with:
-        # user: ${{ inputs.github-object.event.pull_request.user.id }}
         user: ${{ github.event.pull_request.user.id }}
-    - run: echo here ${{ inputs.is-success }} here
-      shell: /bin/bash
     - id: generate-message
       uses: actions/github-script@v7
       with:
@@ -49,21 +43,26 @@ runs:
                     type: 'rich_text_quote',
                     elements: [
                       createTextElement('Pull Request', true),
-                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                      createUserElement('${{ github.event.pull_request.title }} <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"'),
                     ],
                   },
                   {
                     type: 'rich_text_quote',
                     elements: [
-                      createTextElement('Commit'),
-                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                      createTextElement('Commit', true),
+                      createUserElement('<${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}|${{ github.event.pull_request.head.sha }}>'),
                     ],
                   },
-                  {
+                  ${{ inputs.is-success }} ? {
                     type: 'rich_text_quote',
                     elements: [
-                      createTextElement(''),
+                      createTextElement('Build ID', true),
                       createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  } : {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createUserElement('⚠️ Please check the error on <${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>'),
                     ],
                   },
                 ],
