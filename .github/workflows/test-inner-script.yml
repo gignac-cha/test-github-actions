@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: .github/actions/send-slack-notification
-        with:
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          test-web-url: ${{ vars.TEST_WEB_URL }}
-          title: '✅ Unit Test Success'
-          is-success: true
-      - uses: .github/actions/send-slack-notification
-        with:
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          test-web-url: ${{ vars.TEST_WEB_URL }}
-          title: '⛔️ Integration Test Failed'
-          is-success: false
+      # - uses: .github/actions/send-slack-notification
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     test-web-url: ${{ vars.TEST_WEB_URL }}
+      #     title: '✅ Unit Test Success'
+      #     is-success: true
+      # - uses: .github/actions/send-slack-notification
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     test-web-url: ${{ vars.TEST_WEB_URL }}
+      #     title: '⛔️ Integration Test Failed'
+      #     is-success: false
       - run: echo ${{ toJSON(github) }}
       # - id: test-script
       #   uses: actions/github-script@v7
