@@ -15,12 +15,13 @@ jobs:
           result-encoding: string
           script: |
             # const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
-            function createTextElement(args) {
-              return { type: 'text', text: args.text, { style: { bold: args.bold } } };
-            }
+            # function createTextElement(args) {
+            #   return { type: 'text', text: args.text, { style: { bold: args.bold } } };
+            # }
             return {
               blocks: [
-                createTextElement({ text: 'Test' })
+                # createTextElement({ text: 'Test' })
+                1
               ]
             };
       - run: echo Script ${{ steps.test-script.outputs.result }}
