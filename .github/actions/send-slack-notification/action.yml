@@ -80,8 +80,8 @@ runs:
               },
             ],
           });
-    - run: |
-        curl -X POST ${{ inputs.slack-webhook-url }} \
-          -H 'Content-Type: application/json' \
-          -d '${{ steps.generate-message.outputs.result }}'
-      shell: bash
+    # - run: |
+    #     curl -X POST ${{ inputs.slack-webhook-url }} \
+    #       -H 'Content-Type: application/json' \
+    #       -d '${{ steps.generate-message.outputs.result }}'
+    #   shell: bash

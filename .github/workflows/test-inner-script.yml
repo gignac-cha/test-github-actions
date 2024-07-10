@@ -22,6 +22,7 @@ jobs:
           test-web-url: ${{ vars.TEST_WEB_URL }}
           title: '⛔️ Integration Test Failed'
           is-success: false
+      - run: echo ${{ toJSON(github) }}
       # - id: test-script
       #   uses: actions/github-script@v7
       #   with:
