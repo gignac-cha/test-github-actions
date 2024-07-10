@@ -14,16 +14,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            # const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, { style: { bold } } });
-            # function createTextElement(args) {
-            #   return { type: 'text', text: args.text, { style: { bold: args.bold } } };
-            # }
-            return {
-              blocks: [
-                # createTextElement({ text: 'Test' })
-                1
-              ]
-            };
+            return {}
       - run: echo Script ${{ steps.test-script.outputs.result }}
       # - uses: actions/checkout@v4
       # - uses: actions/setup-node@v4
