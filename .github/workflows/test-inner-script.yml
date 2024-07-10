@@ -16,15 +16,16 @@ jobs:
           is-success: true
       - uses: ./.github/actions/send-slack-notification
         with:
+          title: '✅ Unit Test Success'
           is-success: false
-      - id: test-script
-        uses: actions/github-script@v7
-        with:
-          result-encoding: string
-          script: |
-            const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
-            return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
-      - run: echo Script ${{ steps.test-script.outputs.result }}
+      # - id: test-script
+      #   uses: actions/github-script@v7
+      #   with:
+      #     result-encoding: string
+      #     script: |
+      #       const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
+      #       return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
+      # - run: echo Script ${{ steps.test-script.outputs.result }}
       # - uses: actions/setup-node@v4
       #   with:
       #     node-version: 22

@@ -2,9 +2,9 @@ name: Send Slack Notification
 description: Send notification to Slack channel.
 
 inputs:
-  slack-webhook-url:
-    description: Slack Webhook URL
-    required: true
+  # slack-webhook-url:
+  #   description: Slack Webhook URL
+  #   required: true
   title:
     description: Title
     required: true
@@ -20,6 +20,8 @@ runs:
       uses: ./.github/actions/get-slack-user-id
       with:
         user: ${{ github.event.pull_request.user.id }}
+    - run: echo Slack Webhook URL ${{ secrets.SLACK_WEBHOOK_URL }}
+      shell: bash
     - id: generate-message
       uses: actions/github-script@v7
       with:
@@ -62,7 +64,7 @@ runs:
                   } : {
                     type: 'rich_text_quote',
                     elements: [
-                      createUserElement('⚠️ Please check the error on <${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>'),
+                      createUserElement('⚠️ Please check the error on <${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>'),
                     ],
                   },
                 ],
