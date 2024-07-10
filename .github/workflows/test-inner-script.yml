@@ -9,6 +9,7 @@ jobs:
   test-inner-script:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/send-slack-notification
         with:
           is-success: true
@@ -23,7 +24,6 @@ jobs:
             const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
             return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
       - run: echo Script ${{ steps.test-script.outputs.result }}
-      # - uses: actions/checkout@v4
       # - uses: actions/setup-node@v4
       #   with:
       #     node-version: 22
