@@ -20,7 +20,7 @@ jobs:
               return {}
             }
             // return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
-            return JSON.stringify({ blocks: [] });
+            return JSON.stringify({ blocks: createTextElement() });
       - run: echo Script ${{ steps.test-script.outputs.result }}
       # - uses: actions/checkout@v4
       # - uses: actions/setup-node@v4
