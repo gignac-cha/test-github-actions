@@ -1,0 +1,38 @@
+name: test-jobs
+
+on:
+  push:
+    branches:
+      - test-jobs
+
+jobs:
+  test-job-1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: touch a
+      - run: echo $(date -Iseconds) > b
+      - run: pwd
+      - run: ls -alh
+  test-job-2:
+    needs:
+      - test-job-1
+    runs-on: ubuntu-latest
+    steps:
+      - run: pwd
+      - run: ls -alh
+  test-job-3:
+    needs:
+      - test-job-1
+      - test-job-2
+    runs-on: ubuntu-latest
+    steps:
+      - run: pwd
+      - run: ls -alh
+  test-job-4:
+    needs:
+      - test-job-1
+      - test-job-3
+    runs-on: ubuntu-latest
+    steps:
+      - run: pwd
+      - run: ls -alh
