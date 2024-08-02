@@ -9,13 +9,14 @@ jobs:
   test-job-1:
     runs-on: ubuntu-latest
     steps:
-      - run: touch a
-      - run: echo $(date -Iseconds) > b
+      - run: mkdir z
+      - run: touch z/a
+      - run: echo $(date -Iseconds) > z/b
       - run: pwd
-      - run: ls -alh
+      - run: ls -alh ./z
       - uses: actions/upload-artifact@v4
         with:
-          path: .
+          path: ./z
   test-job-2:
     needs:
       - test-job-1
@@ -23,9 +24,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          path: .
+          path: ./z
       - run: pwd
-      - run: ls -alh
+      - run: ls -alh ./z
   test-job-3:
     needs:
       - test-job-1
@@ -33,9 +34,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          path: .
+          path: ./z
       - run: pwd
-      - run: ls -alh
+      - run: ls -alh ./z
   test-job-4:
     needs:
       - test-job-2
@@ -44,6 +45,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          path: .
+          path: ./z
       - run: pwd
-      - run: ls -alh
+      - run: ls -alh ./z
+      - run: tree
