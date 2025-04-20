@@ -1,0 +1,54 @@
+name: Pull Request Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  # push:
+  #   branches:
+  #     - test-pr
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-pr-on-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && !github.event.pull_request.merged
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: git status
+      - run: git branch -a
+      - run: git log --all --graph --oneline
+      # - run: echo "${{ toJSON(github) }}"
+      # - env:
+      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
+      #   run: echo "$GITHUB_CONTEXT"
+      # - run: echo "${{ toJSON(github.event.pull_request) }}"
+      # - run: echo "${{ toJSON(github.event.head_commit) }}"
+      # - run: echo "${{ toJSON(github.event.workflow_run.head_commit) }}"
+      - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV
+      # - run: echo "COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.event.after }})" >> $GITHUB_ENV
+      - run: echo "${{ env.COMMIT_MESSAGE }}"
+      - run: |
+          echo "\
+            {\
+              "message": "✅ Success",\
+              "pull_request_title": "${{ github.event.pull_request.title }}",\
+              "pull_request_number": "${{ github.event.pull_request.number }}",\
+              "pull_request_url": "${{ github.event.pull_request.html_url }}",\
+              "commit_message": "${{ env.GITHUB_COMMIT_MESSAGE }}",\
+              "commit_url": "${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}"\
+            }"
+  # test-pr-on-push:
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # - run: echo "${{ toJSON(github) }}"
+  #     - env:
+  #         GITHUB_CONTEXT: ${{ toJSON(github) }}
+  #       run: echo "$GITHUB_CONTEXT"
