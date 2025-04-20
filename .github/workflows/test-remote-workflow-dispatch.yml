@@ -1,0 +1,20 @@
+name: test-remote-workflow-dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      user-agent-string:
+        description: User-Agent string in HTTP header
+        type: string
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-parse-user-agent:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - run: echo hi
