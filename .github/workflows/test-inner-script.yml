@@ -1,0 +1,57 @@
+name: test-inner-script
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-inner-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # - uses: .github/actions/send-slack-notification
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     test-web-url: ${{ vars.TEST_WEB_URL }}
+      #     title: '✅ Unit Test Success'
+      #     is-success: true
+      # - uses: .github/actions/send-slack-notification
+      #   with:
+      #     slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     test-web-url: ${{ vars.TEST_WEB_URL }}
+      #     title: '⛔️ Integration Test Failed'
+      #     is-success: false
+      # - run: echo '${{ toJSON(github) }}'
+      - id: get-job-id
+        run: |
+          gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs | \
+          jq '.jobs[] | select(.name == "${{ github.job }}") | .id' | \
+          gawk '{ print "id=" $1 }' >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - run: "echo Job ID: ${{ steps.get-job-id.outputs.id }}"
+      # - id: test-script
+      #   uses: actions/github-script@v7
+      #   with:
+      #     result-encoding: string
+      #     script: |
+      #       const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
+      #       return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
+      # - run: echo Script ${{ steps.test-script.outputs.result }}
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22
+      # - id: get-slack-id
+      #   uses: ./.github/actions/get-slack-user-id
+      #   with:
+      #     user: ${{ github.event.pull_request.user.id }}
+      # - id: generate-message
+      #   run: |
+      #     node -e 'console.log("message=" + `\
+      #       ✅ *${{ 'name' }} Success* <@${{ steps.get-slack-id.outputs.id }}>\
+      #       > *Pull Request*: ${{ github.event.pull_request.title }} <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>\
+      #       > *Commit*: <${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}|${"${{ github.event.pull_request.head.sha }}".slice(0, 8)}>\
+      #       > *Build ID*: <${{ vars.TEST_WEB_URL }}|${{ github.run_number }}> (<${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>)\
+      #     `)' >> $GITHUB_OUTPUT
+      # - run: echo ${{ steps.generate-message.outputs.message }}
