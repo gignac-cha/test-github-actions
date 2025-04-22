@@ -3,7 +3,7 @@ name: test-workflow-command
 on:
   push:
     branches:
-      - test-workflow-command
+      - tests/workflow-command
 
 jobs:
   test-workflow-command:
