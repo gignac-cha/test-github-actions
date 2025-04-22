@@ -11,9 +11,13 @@ jobs:
     steps:
       - run: |
           echo "::debug::Debug Message"
+          echo "after debug message"
           echo "::notice file=file,line=line,endLine=endLine,title=title::Notice Message"
+          echo "after notice message"
           echo "::warning file=file.js,line=123,endLine=456,title=title::Warning Message"
+          echo "after warning message"
           echo "::error file=file.js,line=123,endLine=456,title=title::Error Message"
+          echo "after error message"
           exit 1
       - run: echo "Normal 1"
       - if: success()
