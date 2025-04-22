@@ -12,7 +12,8 @@ jobs:
       - run: |
           echo "::debug::Debug Message"
           echo "after debug message"
-          echo "::notice file=file,line=line,endLine=endLine,title=title::Notice Message"
+          echo "::notice file=file,line=line,endLine=endLine,title=title::Notice Message \
+          after notice message"
           echo "after notice message"
           echo "::warning file=file.js,line=123,endLine=456,title=title::Warning Message"
           echo "after warning message"
