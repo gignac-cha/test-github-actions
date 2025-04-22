@@ -15,12 +15,16 @@ jobs:
           echo "::warning file=file.js,line=123,endLine=456,title=title::Notice Message"
           echo "::error file=file.js,line=123,endLine=456,title=title::Notice Message"
           exit 1
-      - if: success()
-        run: echo "Success 1"
-      - if: failure()
-        run: echo "Failure 1"
       - run: echo "Normal 1"
       - if: success()
+        run: echo "Success 1"
+      - run: echo "Normal 2"
+      - if: failure()
+        run: echo "Failure 1"
+      - run: echo "Normal 3"
+      - if: success()
         run: echo "Success 2"
+      - run: echo "Normal 4"
       - if: failure()
         run: echo "Failure 2"
+      - run: echo "Normal 5"
