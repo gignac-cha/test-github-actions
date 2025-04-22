@@ -1,0 +1,26 @@
+name: test-workflow-command
+
+on:
+  push:
+    branches:
+      - test-workflow-command
+
+jobs:
+  test-workflow-command:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "::debug::Debug Message"
+          echo "::notice file=file,line=line,endLine=endLine,title=title::Notice Message"
+          echo "::warning file=file.js,line=123,endLine=456,title=title::Notice Message"
+          echo "::error file=file.js,line=123,endLine=456,title=title::Notice Message"
+          exit 1
+      - if: success()
+        run: echo "Success 1"
+      - if: failure()
+        run: echo "Failure 1"
+      - run: echo "Normal 1"
+      - if: success()
+        run: echo "Success 2"
+      - if: failure()
+        run: echo "Failure 2"
