@@ -10,4 +10,4 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo ${{ inputs.markdown }}
+      run: echo '${{ inputs.markdown }}'
