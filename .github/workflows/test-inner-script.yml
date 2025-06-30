@@ -30,13 +30,13 @@ jobs:
       #     gawk '{ print "id=" $1 }' >> $GITHUB_OUTPUT
       #   env:
       #     GH_TOKEN: ${{ github.token }}
-      # - run: "echo Job ID: ${{ steps.get-job-id.outputs.id }}"
-      - id: test-script
-        uses: actions/github-script@v7
-        with:
-          result-encoding: json
-          script: |
-            return { a: 1, b: 'test', c: false, d: [1,2,3] }
+      # # - run: "echo Job ID: ${{ steps.get-job-id.outputs.id }}"
+      # - id: test-script
+      #   uses: actions/github-script@v7
+      #   with:
+      #     result-encoding: json
+      #     script: |
+      #       return { a: 1, b: 'test', c: false, d: [1,2,3] }
       # - id: test-script
       #   uses: actions/github-script@v7
       #   with:
@@ -44,7 +44,12 @@ jobs:
       #     script: |
       #       const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
       #       return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
-      - run: echo '${{ steps.test-script.outputs.result }}' | jq
+      # - run: echo '${{ steps.test-script.outputs.result }}' | jq
+      - uses: ./.github/actions/test-action
+        with:
+          markdown: |
+            First line
+second line
       # - uses: actions/setup-node@v4
       #   with:
       #     node-version: 22
