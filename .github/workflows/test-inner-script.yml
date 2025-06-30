@@ -44,7 +44,7 @@ jobs:
       #     script: |
       #       const createTextElement = ({ text, bold = false }) => ({ type: 'text', text, style: { bold } });
       #       return JSON.stringify({ blocks: [ createTextElement({ text: 'Test' }) ] });
-      - run: echo Script '${{ steps.test-script.outputs.result }}' | jq
+      - run: echo '${{ steps.test-script.outputs.result }}' | jq
       # - uses: actions/setup-node@v4
       #   with:
       #     node-version: 22
