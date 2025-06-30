@@ -39,11 +39,6 @@ jobs:
             return { a: 1, b: 'test', c: false, d: [1,2,3] }
       - run: |
           echo 1 '${{ steps.test-script.outputs.result }}'
-          echo 2 '${{ steps.test-script.outputs.result }}' | jq
-          echo 3 '${{ steps.test-script.outputs.result['a'] }}'
-          echo 4 '${{ steps.test-script.outputs.result['b'] }}'
-          # echo 5 '${{ steps.test-script.outputs.result["a"] }}'
-          echo 6 '${{ steps.test-script.outputs.result.a }}'
       # - id: test-script
       #   uses: actions/github-script@v7
       #   with:
