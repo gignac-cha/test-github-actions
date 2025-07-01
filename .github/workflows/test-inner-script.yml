@@ -87,7 +87,7 @@ jobs:
     if: always()
     steps:
       - run: echo Result = ${{ needs.test-inner-script.result }} !!!
-      - if: needs.test-inner-script.result == 'success
+      - if: needs.test-inner-script.result == 'success'
         run: echo SUCCESS!!
       - if: needs.test-inner-script.result == 'failure'
         run: echo FAILURE...
