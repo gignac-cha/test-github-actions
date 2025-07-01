@@ -31,24 +31,25 @@ jobs:
       #   env:
       #     GH_TOKEN: ${{ github.token }}
       # # - run: "echo Job ID: ${{ steps.get-job-id.outputs.id }}"
-      - id: test-script
-        uses: actions/github-script@v7
-        with:
-          result-encoding: "json"
-          script: |
-            return { a: 1, b: 'test', c: false, d: [1,2,3] }
-      - run: |
-          echo 1 '${{ steps.test-script.outputs.result }}'
-          echo 2 '${{ steps.test-script.outputs.result }}' | jq
-          echo 2.1 '${{ fromJSON(steps.test-script.outputs.result).a }}'
-          echo 2.2 '${{ fromJSON(steps.test-script.outputs.result).b }}'
-          echo 2.3 '${{ fromJSON(steps.test-script.outputs.result).c }}'
-          echo 2.4 '${{ fromJSON(steps.test-script.outputs.result).d }}'
-          echo 3 '${{ steps.test-script.outputs.result.a }}'
-          echo 3.1 '${{ steps.test-script.outputs.result['a'] }}'
-          echo 4 '${{ steps.test-script.outputs.result.b }}'
-          echo 5 '${{ steps.test-script.outputs.result.c }}'
-          echo 6 '${{ steps.test-script.outputs.result.d }}'
+      # - id: test-script
+      #   uses: actions/github-script@v7
+      #   with:
+      #     result-encoding: "json"
+      #     script: |
+      #       return { a: 1, b: 'test', c: false, d: [1,2,3] }
+      # - run: |
+      #     echo 1 '${{ steps.test-script.outputs.result }}'
+      #     echo 2 '${{ steps.test-script.outputs.result }}' | jq
+      #     echo 2.1 '${{ fromJSON(steps.test-script.outputs.result).a }}'
+      #     echo 2.2 '${{ fromJSON(steps.test-script.outputs.result).b }}'
+      #     echo 2.3 '${{ fromJSON(steps.test-script.outputs.result).c }}'
+      #     echo 2.4 '${{ fromJSON(steps.test-script.outputs.result).d }}'
+      #     echo 3 '${{ steps.test-script.outputs.result.a }}'
+      #     echo 3.1 '${{ steps.test-script.outputs.result['a'] }}'
+      #     echo 4 '${{ steps.test-script.outputs.result.b }}'
+      #     echo 5 '${{ steps.test-script.outputs.result.c }}'
+      #     echo 6 '${{ steps.test-script.outputs.result.d }}'
+      - run: exit(1)
       # - id: test-script
       #   uses: actions/github-script@v7
       #   with:
@@ -79,3 +80,10 @@ jobs:
       #       > *Build ID*: <${{ vars.TEST_WEB_URL }}|${{ github.run_number }}> (<${{ github.repository.html_url }}/actions/runs/${{ github.run_id }}|Workflow #${{ github.run_number }}>)\
       #     `)' >> $GITHUB_OUTPUT
       # - run: echo ${{ steps.generate-message.outputs.message }}
+
+  after-job:
+    runs-on: ubuntu-latest
+    needs: test-inner-script
+    steps:
+      - run: echo Result = ${{ needs.test-inner-script.result }} !!!
+    
