@@ -1,0 +1,13 @@
+name: Test Action
+description: Test Action
+
+inputs:
+  markdown:
+    description: Markdown
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo '${{ inputs.markdown }}'

@@ -1,0 +1,87 @@
+name: Send Slack Notification
+description: Send notification to Slack channel.
+
+inputs:
+  slack-webhook-url:
+    description: Slack Webhook URL
+    required: true
+  test-web-url:
+    description: Test Web URL
+    required: true
+  title:
+    description: Title
+    required: true
+  is-success:
+    type: boolean
+    description: Success?
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - id: get-slack-user-id
+      uses: ./.github/actions/get-slack-user-id
+      with:
+        user: ${{ github.event.pull_request.user.id }}
+    - id: generate-message
+      uses: actions/github-script@v7
+      with:
+        result-encoding: string
+        script: |
+          const createTextElement = (text, bold = false) => ({ type: 'text', text, style: { bold } });
+          const createUserElement = (user_id) => ({ type: 'user', user_id });
+          const createLinkElement = (url, text) => ({ type: 'link', url, text: text ?? url });
+          const testWebURL = new URL('${{ inputs.test-web-url }}');
+          testWebURL.searchParams.set('build', ${{ github.run_number }});
+          return JSON.stringify({
+            blocks: [
+              {
+                type: 'rich_text',
+                elements: [
+                  {
+                    type: 'rich_text_section',
+                    elements: [
+                      createTextElement('${{ inputs.title }} ', true),
+                      createUserElement('${{ steps.get-slack-user-id.outputs.id }}'),
+                    ],
+                  },
+                  {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('Pull Request:', true),
+                      createTextElement(' ${{ github.event.pull_request.title }} '),
+                      createLinkElement('${{ github.event.pull_request.html_url }}', '#${{ github.event.pull_request.number }}'),
+                    ],
+                  },
+                  {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('Commit: ', true),
+                      createLinkElement('${{ github.event.pull_request.html_url }}/commits/${{ github.event.pull_request.head.sha }}', '${{ github.event.pull_request.head.sha }}'.slice(0, 8)),
+                    ],
+                  },
+                  ${{ inputs.is-success }} ? {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('Build ID: ', true),
+                      createLinkElement(testWebURL.toString(), '${{ github.run_number }}'),
+                      createTextElement(' ('),
+                      createLinkElement('${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}', 'Workflow #${{ github.run_number }}'),
+                      createTextElement(')'),
+                    ],
+                  } : {
+                    type: 'rich_text_quote',
+                    elements: [
+                      createTextElement('⚠️ Please check the error on '),
+                      createLinkElement('${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}', 'Workflow #${{ github.run_number }}'),
+                    ],
+                  },
+                ],
+              },
+            ],
+          });
+    # - run: |
+    #     curl -X POST ${{ inputs.slack-webhook-url }} \
+    #       -H 'Content-Type: application/json' \
+    #       -d '${{ steps.generate-message.outputs.result }}'
+    #   shell: bash
